@@ -28,3 +28,17 @@ for entry in dataArray[1:-1]:
         offenseDict[index] = values
 
 
+class ReadData(object):
+    @staticmethod
+    def fromFile(filename):
+        f = open('dummyInput.txt', 'r')
+        inputString = f.read()
+        # fileobj.read() is a string, and we split by '\n' to extract each row
+        dataArray = inputString.split('\n')
+
+    @staticmethod
+    def fromURL(urlname):
+        fileobj = urllib.urlopen(url)
+        inputString = fileobj.read()
+        # fileobj.read() is a string, and we split by '\r\n' to extract each row
+        dataArray = inputString.split('\r\n')
