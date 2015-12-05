@@ -4,5 +4,5 @@
 import numpy as np
 
 class WriteData(object):
-    def a():
+    def ():
         return
