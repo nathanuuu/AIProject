@@ -40,8 +40,8 @@ class ReadData(object):
 #########   Tests       ######
 ##############################
 #print ReadData.fromFile("dummyInput.txt")
-#url = "https://data.wprdc.org/datastore/dump/c0fcc09a-7ddc-4f79-a4c1-9542301ef9dd"
-#print ReadData.fromURL(url)
+#u="https://data.wprdc.org/datastore/dump/c0fcc09a-7ddc-4f79-a4c1-9542301ef9dd"
+#print ReadData.fromURL(u)
 
 
 
