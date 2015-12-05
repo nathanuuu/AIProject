@@ -1,44 +1,47 @@
 import urllib
-
-# # Download the data from URL
-# url = "https://data.wprdc.org/datastore/dump/c0fcc09a-7ddc-4f79-a4c1-9542301ef9dd"
-# fileobj = urllib.urlopen(url)
-# inputString = fileobj.read()
-# # fileobj.read() is a string, and we split by '\r\n' to extract each row
-# dataArray = inputString.split('\r\n')
-
-# Use dummyInput.txt
-f = open('dummyInput.txt', 'r')
-inputString = f.read()
-# fileobj.read() is a string, and we split by '\n' to extract each row
-dataArray = inputString.split('\n')
-
-# then we create a dictionary for offense or arrest
-dataDict = dict()
-arrestDict = dict()
-offenseDict = dict()
-
-for entry in dataArray[1:-1]:
-    values = entry.split(',')
-    index = int(values[0])
-    dataDict[index] = values
-    if (values[1] == 'ARREST'):
-        arrestDict[index] = values
-    elif (values[1] == 'OFFENSE 2.0'):
-        offenseDict[index] = values
-
+import numpy as np
 
 class ReadData(object):
+
+    # A method that turns the file data into a 2D numpy array
     @staticmethod
     def fromFile(filename):
-        f = open('dummyInput.txt', 'r')
+        f = open(filename, 'r')
         inputString = f.read()
         # fileobj.read() is a string, and we split by '\n' to extract each row
-        dataArray = inputString.split('\n')
+        rowArray = inputString.split('\n')
+        return ReadData.makeCellArray(rowArray)
 
+
+    # A method that turns the online data into a 2D numpy array
     @staticmethod
     def fromURL(urlname):
-        fileobj = urllib.urlopen(url)
+        fileobj = urllib.urlopen(urlname)
         inputString = fileobj.read()
         # fileobj.read() is a string, and we split by '\r\n' to extract each row
-        dataArray = inputString.split('\r\n')
+        rowArray = inputString.split('\r\n')
+        return ReadData.makeCellArray(rowArray)
+
+
+    # A function that takes in a 1D python array of strings, 
+    # splits the strings by data separator ','
+    # and returns a 2D numpy array of all data
+    @staticmethod
+    def makeCellArray(rowArray):
+        cellArray = []
+        rowArray.pop(0) # remove the first row which contains headers
+        for s in rowArray:
+            line = s.split(',')
+            cellArray.append(line)
+        return np.array(cellArray)
+
+
+##############################
+#########   Tests       ######
+##############################
+#print ReadData.fromFile("dummyInput.txt")
+#url = "https://data.wprdc.org/datastore/dump/c0fcc09a-7ddc-4f79-a4c1-9542301ef9dd"
+#print ReadData.fromURL(url)
+
+
+
