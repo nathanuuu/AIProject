@@ -35,7 +35,6 @@ _id,REPORT_NAME,CCR,SECTION,DESCRIPTION,ARREST_TIME,ADDRESS,NEIGHBORHOOD,ZONE,AG
 34,ARREST,15041698,13(a)(30),Possession w/ Intent to Del. Controlled Substance,2015-03-10T17:25:00,3200 block Bainton St,Brighton Heights,1,21,M
 35,ARREST,15041698,903,Criminal Conspiracy.,2015-03-10T17:25:00,3200 block Bainton St,Brighton Heights,1,21,M
 36,ARREST,15041698,6105(a)(1),Persons not to possess  use  manufacture  control  sell or transfer firearms: Former Convict enumerated in subsection (b),2015-03-10T17:25:00,3200 block Bainton St,Brighton Heights,1,21,M
-19229,OFFENSE 2.0,15114578,3502,Burglary.,2015-06-23T20:00:00,Minooka St,Carrick,3,,
 37,OFFENSE 2.0,15041823,3928,Unauthorized Use of Automobile and Other Vehicles.,2015-03-10T20:40:00,300 block Mt Pleasant Rd,Northview Heights,1,,
 38,ARREST,15038474,3743,Accidents Involving Damage to Attended Veh. or Property,2015-03-10T21:00:00,California Ave & Stranmore St,Manchester,1,51,M
 39,OFFENSE 2.0,15041749,4120,Identity Theft,2015-03-10T00:01:00,1400 block Centre Ave,Golden Triangle/Civic Arena,2,,
