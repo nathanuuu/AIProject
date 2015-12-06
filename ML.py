@@ -36,6 +36,12 @@ class ML(object):
     def makeTheta(self):
         pass
 
-    def findTheta(self):
+
+    def learningAlgo(self):
         pass
 
+    def testingAlgo(self):
+        pass
+
+    def lineOutput(self, x):
+        pass

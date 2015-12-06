@@ -14,19 +14,21 @@ class BlotterML(object):
 
     # Runs the machine learning problem on arrest records
     def runArrest(self):
-        oML = Arrest(self.dataArray)
-        oML.makeDataSets()
-        oML.makeVectors()
+        aML = Arrest(self.dataArray)
+        aML.makeDataSets()
+        aML.makeVectors()
 
     # Runs the machine learning problem on offense records
     def runOffense(self):
         oML = Offense(self.dataArray)
         oML.makeDataSets()
         oML.makeVectors()
-
+        
 
 # Create a new instance of the blotter problem
 B = BlotterML("")
-# Run it, test it, and generate output
+# Run it
 B.runOffense()
 B.runArrest()
+# we can generate output by calling the lineOutput function of the problem
+
