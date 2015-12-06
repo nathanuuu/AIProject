@@ -24,6 +24,7 @@ class BlotterML(object):
         oML = Offense(self.dataArray)
         oML.makeDataSets()
         oML.makeVectors()
+        oML.learningAlgo()
         
 
 # Create a new instance of the blotter problem
