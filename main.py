@@ -1,5 +1,7 @@
 from ReadData import ReadData as rd
-from Offense import Offense as of
+from Offense import Offense
+from Arrest import Arrest
+from TableOp import TableOp as to
 
 
 class BlotterML(object):
@@ -9,17 +11,22 @@ class BlotterML(object):
         self.url = url
         #self.dataArray = rd.fromURL(self.url)
         self.dataArray = rd.fromFile("dummyInput.txt")
-        (self.lset, self.vset, self.tset) = 
 
     # Runs the machine learning problem on arrest records
     def runArrest(self):
-        pass
+        oML = Arrest(self.dataArray)
+        oML.makeDataSets()
+        oML.makeVectors()
 
     # Runs the machine learning problem on offense records
     def runOffense(self):
-        pass
+        oML = Offense(self.dataArray)
+        oML.makeDataSets()
+        oML.makeVectors()
 
 
 # Create a new instance of the blotter problem
 B = BlotterML("")
 # Run it, test it, and generate output
+B.runOffense()
+B.runArrest()
