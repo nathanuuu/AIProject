@@ -10,6 +10,7 @@ class BlotterML(object):
     def __init__(self, url):
         self.url = url
         #self.dataArray = rd.fromURL(self.url)
+        print "Alert: using dummy input"
         self.dataArray = rd.fromFile("dummyInput.txt")
 
     # Runs the machine learning problem on arrest records
@@ -26,9 +27,10 @@ class BlotterML(object):
         
 
 # Create a new instance of the blotter problem
-B = BlotterML("")
+u = "https://data.wprdc.org/datastore/dump/c0fcc09a-7ddc-4f79-a4c1-9542301ef9dd"
+B = BlotterML(u)
 # Run it
 B.runOffense()
-B.runArrest()
+#B.runArrest()
 # we can generate output by calling the lineOutput function of the problem
 

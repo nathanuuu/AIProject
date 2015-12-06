@@ -10,13 +10,13 @@ class ML(object):
         self.dataArray = dataArray
 
     def makeDataSets(self):
-        learning = 0.7
-        training = 0.7
-        (self.learningData, self.testingData) = TableOp.randomSplit(
+        print "Alert: all data sets are used for training"
+        learning = 1.0
+        training = 1.0
+        (learningData, self.testingData) = TableOp.randomSplit(
             self.dataArray, learning)
         (self.trainingData, self.validationData) = TableOp.randomSplit(
-            self.dataArray, training)
-        del self.learningData
+            learningData, training)
 
 
     def makeVectors(self):
@@ -25,23 +25,25 @@ class ML(object):
         self.theta = self.makeTheta()
 
 
-    def makeX(self):
-        pass
+    # def makeX(self):
+    #     pass
 
 
-    def makeY(self):
-        pass
+    # def makeY(self):
+    #     pass
 
 
-    def makeTheta(self):
-        pass
+    # def makeTheta(self):
+    #     pass
 
 
     def learningAlgo(self):
         pass
 
+
     def testingAlgo(self):
         pass
+
 
     def lineOutput(self, x):
         pass

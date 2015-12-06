@@ -1,5 +1,5 @@
 # This class contains all the methods on manipulating data. 
-# Original data are read only. All methods return new tables.
+# All methods return new table. Original data are not modified. 
 
 import copy
 import random
@@ -85,6 +85,33 @@ class TableOp(object):
             else:
                 qTable.append(copy.deepcopy(table[i]))
         return (pTable, qTable)
+
+
+    # A method that takes a particular label column of the table, and
+    # replaces the entries of that column with a unique numerical identifier.
+    # Returns a new table with numerical identifier, and a dictionary
+    # for what the identifiers mean. 
+    @staticmethod
+    def numerify(table, label):
+        newTable = copy.deepcopy(table)
+        numDict = dict() # numericals to entries, returned
+        entryDict = dict() # entry to numericals
+        headers = table[0]
+        c = -1
+        for i in xrange(len(headers)):
+            if (headers[i] == label):
+                c = i
+        if (c == -1):
+            print "Label invalid"
+        else:
+            nextNum = 0 # start with 0
+            for r in xrange(1, len(newTable), 1): # headers are kept intact
+                if (newTable[r][c] not in entryDict):
+                    entryDict[newTable[r][c]] = nextNum
+                    numDict[nextNum] = newTable[r][c]
+                    nextNum += 1
+                newTable[r][c] = entryDict[newTable[r][c]]
+        return (newTable, numDict)
 
 ##############################
 #########   Tests       ######
