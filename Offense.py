@@ -2,6 +2,7 @@
 
 from ML import ML
 from TableOp import TableOp
+from Crime import Crime
 import numpy as np
 
 class Offense(ML):
@@ -17,9 +18,10 @@ class Offense(ML):
         (self.dataArray, self.nidDict) = TableOp.numerify(
             self.dataArray, "NEIGHBORHOOD")
         self.neighborhoodCount = len(self.nidDict) # number of neighborhoods
-        print "Alert: in Offense, time is 3 hours per interval"
-        self.timeIntervals = 60 * 3 # in minutes
+        print "Alert: in Offense, time is 1 hours per interval"
+        self.timeIntervals = 60 * 1 # in minutes (60 minutes * some hours)
         self.timeIntervalCount = 60 * 24 / self.timeIntervals
+        print self.nidDict
 
 
     def makeX(self):
@@ -48,7 +50,6 @@ class Offense(ML):
 
 
     def makeY(self):
-        print "Alert: in Offense, crime is 1 or 0 by length of description"
         self.YTable = TableOp.reduceColumns(self.dataArray, ["DESCRIPTION"])
         (self.Yrows) = self.Xrows
         self.Y = [0.0 for i in xrange(self.Yrows)]
@@ -59,8 +60,5 @@ class Offense(ML):
 
     #### NEEDS CHANGE ######
     def fillYi(self, desc):
-        if (len(desc) > 20):
-            return 1.0
-        else:
-            return 0.0
+        return Crime.severeness(desc)
 

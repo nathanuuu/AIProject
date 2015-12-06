@@ -64,9 +64,9 @@ class ML(object):
     def learningAlgo(self):
         print "Alert: ML code copied from HW3 solution"
         print self.stochastic_grad_descent(1e-3, self.loss_logistic, 10, 0.001)
-        print self.stochastic_grad_descent(1e-3, self.loss_svm, 10, 0.001)
-        print self.grad_descent(1e-3, self.loss_logistic, 10, 0.001)
-        print self.grad_descent(1e-3, self.loss_svm, 10, 0.001)
+        # print self.stochastic_grad_descent(1e-3, self.loss_svm, 10, 0.001)
+        # print self.grad_descent(1e-3, self.loss_logistic, 10, 0.001)
+        # print self.grad_descent(1e-3, self.loss_svm, 10, 0.001)
 
 
     def testingAlgo(self):

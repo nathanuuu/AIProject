@@ -8,9 +8,9 @@ class BlotterML(object):
     # Initialize the blotter problem
     def __init__(self, url):
         self.url = url
-        #self.dataArray = rd.fromURL(self.url)
-        print "Alert: using dummy input"
-        self.dataArray = rd.fromFile("dummyInput.txt")
+        self.dataArray = rd.fromURL(self.url)
+        # print "Alert: using dummy input"
+        # self.dataArray = rd.fromFile("dummyInput.txt")
 
     # Runs the machine learning problem on arrest records
     def runArrest(self):
@@ -24,7 +24,7 @@ class BlotterML(object):
         oML.makeDataSets()
         oML.makeVectors()
         oML.learningAlgo()
-        
+
 
 # Create a new instance of the blotter problem
 u = "https://data.wprdc.org/datastore/dump/c0fcc09a-7ddc-4f79-a4c1-9542301ef9dd"
