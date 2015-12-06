@@ -1,7 +1,6 @@
 from ReadData import ReadData as rd
 from Offense import Offense
 from Arrest import Arrest
-from TableOp import TableOp as to
 
 
 class BlotterML(object):

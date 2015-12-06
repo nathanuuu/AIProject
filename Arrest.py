@@ -13,14 +13,18 @@ class Arrest(ML):
         # and take the stuff we need
         self.dataArray = TableOp.reduceColumns(self.dataArray, 
             ["DESCRIPTION", "ARREST_TIME", "NEIGHBORHOOD", "AGE", "GENDER"])
+        # we give each neighborhood a numerical representation
+        (self.dataArray, self.nidDict) = TableOp.numerify(
+            self.dataArray, "NEIGHBORHOOD")
+        self.neighborhoodCount = len(self.nidDict) # number of neighborhoods
+        print "Alert: in Arrest, time is 3 hours per interval"
+        self.timeIntervals = 60 * 3 # in minutes
+        self.timeIntervalCount = 60 * 24 / self.timeIntervals
+
 
     def makeX(self):
         pass
 
 
     def makeY(self):
-        pass
-
-
-    def makeTheta(self):
         pass
