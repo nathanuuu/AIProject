@@ -28,9 +28,8 @@ class ReadData(object):
     @staticmethod
     def makeCellArray(rowArray):
         cellArray = []
-        # remove the first row which contains headers, and the last row
-        # which is empty from rowArray
-        for s in rowArray[1: -1]:
+        # remove the last row which is empty in rowArray
+        for s in rowArray[:-1]:
             line = s.split(',')
             cellArray.append(line)
         return cellArray

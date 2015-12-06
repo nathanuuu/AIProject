@@ -1,6 +1,7 @@
 from ReadData import ReadData as rd
 from Offense import Offense as of
 
+
 class BlotterML(object):
 
     # Initialize the blotter problem
