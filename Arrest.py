@@ -1,4 +1,6 @@
 # This arrest class is an extension to the ml class
+# Given an arrest, and a neighborhood, what is the likely
+# age and gender of the perp.
 
 from ML import ML
 from TableOp import TableOp
