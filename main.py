@@ -8,9 +8,9 @@ class BlotterML(object):
     # Initialize the blotter problem
     def __init__(self, url):
         self.url = url
-        # self.dataArray = rd.fromURL(self.url)
-        print "Alert: using dummy input"
-        self.dataArray = rd.fromFile("dummyInput2.txt")
+        self.dataArray = rd.fromURL(self.url)
+        # print "Alert: using dummy input"
+        # self.dataArray = rd.fromFile("dummyInput2.txt")
 
     # Runs the machine learning problem on arrest records
     def runArrest(self):
