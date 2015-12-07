@@ -8,10 +8,15 @@ from Crime import Crime
 
 class Arrest(ML):
     
-    def __init__(self, dataArray):
+    def __init__(self, dataArray, crimeClass, ageClass):
+        self.crimeClass = crimeClass
+        self.ageClass = sorted(ageClass)
         # we need to take out only arrest data
         self.dataArray = TableOp.takeEntries(dataArray,
             ["REPORT_NAME"], ["ARREST"])
+        # we drop entries where data are not complete
+        self.dataArray = TableOp.dropEntries(self.dataArray, 
+            ["AGE", "GENDER"], ["", ""])
         # and take the stuff we need
         self.dataArray = TableOp.reduceColumns(self.dataArray, 
             ["DESCRIPTION", "NEIGHBORHOOD", "AGE", "GENDER"])
@@ -19,16 +24,13 @@ class Arrest(ML):
         (self.dataArray, self.nidDict) = TableOp.numerify(
             self.dataArray, "NEIGHBORHOOD")
         self.neighborhoodCount = len(self.nidDict) # number of neighborhoods
-        self.ageGroupCount = 6
+        self.ageGroupCount = len(self.ageClass) + 1
         self.genderCount = 2
-        print len(self.dataArray)
 
 
     def makeX(self):
         self.XTable = TableOp.reduceColumns(self.dataArray,
             ["NEIGHBORHOOD", "AGE", "GENDER"])
-        self.XTable = TableOp.dropEntries(self.XTable, 
-            ["AGE", "GENDER"], ["", ""])
         self.updateAge()
         self.updateGender()
         (self.Xrows, self.Xcols) = (len(self.XTable) - 1, 
@@ -42,8 +44,10 @@ class Arrest(ML):
         self.X = np.array(self.X)
 
 
+    ######## CHANGE ########
     def updateAge(self):
         for i in xrange(1, len(self.XTable), 1):
+            # invalid data are thrown out
             age = int(self.XTable[i][1])
             if (0 < age < 15):
                 self.XTable[i][1] = 0
@@ -70,33 +74,21 @@ class Arrest(ML):
 
     def makeY(self):
         self.YTable = TableOp.reduceColumns(self.dataArray, ["DESCRIPTION"])
-        crimeClass = [("burglary", 1.0)]
+        crimeClass = self.crimeClass
         (self.Yrows) = self.Xrows
         self.Y = [0.0 for i in xrange(self.Yrows)]
-        print self.YTable
         for i in xrange(len(self.Y)):
             desc = self.YTable[i + 1][0] # skip header
             self.Y[i] = Crime.severeness(desc, crimeClass)
         self.Y = np.array(self.Y)
 
 
-    def printTheta(self):
-        self.printableTheta = self.theta.tolist()
-        for i in xrange(len(self.printableTheta)):
-            self.printableTheta[i] = (self.recoverLabels(i), 
-                self.printableTheta[i])
-        self.printableTheta = sorted(self.printableTheta, 
-            key = lambda x: x[1], reverse = True)
-        for i in xrange(len(self.printableTheta)):
-            print self.printableTheta[i]
-
-
     def recoverLabels(self, index):
         # gender
         if (index % 2 == 0): 
-            sString = "M "
+            sString = "M"
         else: 
-            sString = "F "
+            sString = "F"
         # age group
         a = (index % (self.ageGroupCount * self.genderCount)) / self.genderCount
         if (a == 0):
@@ -114,9 +106,25 @@ class Arrest(ML):
         # neighborhood
         n = index / (self.genderCount * self.ageGroupCount)
         nString = self.nidDict[n]
-        return sString + aString + nString
+        return [sString, aString, nString]
 
 
+    def writeThetaToCSV(self, consolePrint, fileName):
+        theta = self.theta.tolist()
+        exportList = []
+        print theta
+        for i in xrange(len(theta)):
+            output = self.recoverLabels(i)
+            output.append(str(theta[i]))
+            if (consolePrint == True):
+                print output[0], output[1], output[2], output[3]
+            exportList.append(output)
+        # write to file
+        ad = open(fileName, "w+")
+        for i in xrange(len(exportList)):
+            ad.write(exportList[i][0] + "," + str(exportList[i][1]) + ',' +
+                exportList[i][2] + "," + str(exportList[i][3]) + '\n')
+        ad.close()
 
 
 

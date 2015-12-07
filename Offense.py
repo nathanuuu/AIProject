@@ -7,7 +7,14 @@ import numpy as np
 
 class Offense(ML):
 
-    def __init__(self, dataArray):
+    def __init__(self, dataArray, crimeClass, hours):
+        try:
+            assert(type(hours) == int and 24 % hours == 0)
+        except AssertionError:
+            hours = 1
+        self.hours = hours
+        # we store the crimeClass to the problem
+        self.crimeClass = crimeClass
         # we need to take out only offense data
         self.dataArray = TableOp.takeEntries(dataArray, 
             ["REPORT_NAME"], ["OFFENSE 2.0"])
@@ -18,10 +25,8 @@ class Offense(ML):
         (self.dataArray, self.nidDict) = TableOp.numerify(
             self.dataArray, "NEIGHBORHOOD")
         self.neighborhoodCount = len(self.nidDict) # number of neighborhoods
-        print "Alert: in Offense, time is 1 hours per interval"
-        self.timeIntervals = 60 * 1 # in minutes (60 minutes * some hours)
+        self.timeIntervals = 60 * hours # in minutes
         self.timeIntervalCount = 60 * 24 / self.timeIntervals
-        print self.nidDict
 
 
     def makeX(self):
@@ -36,7 +41,6 @@ class Offense(ML):
         self.X = np.array(self.X)
 
 
-    #### NEEDS CHANGE ######
     # Fill the X(i) with data from the ith table entry
     def fillXi(self, xi, ti):
         (time, nbh) = (ti[0], ti[1])
@@ -54,11 +58,43 @@ class Offense(ML):
         (self.Yrows) = self.Xrows
         self.Y = [0.0 for i in xrange(self.Yrows)]
         for i in xrange(self.Yrows):
-            self.Y[i] = self.fillYi(self.YTable[i + 1][0])  # skip header
+            self.Y[i] = Crime.severeness(self.YTable[i + 1][0], 
+                self.crimeClass)  # skip header
         self.Y = np.array(self.Y)
 
 
-    #### NEEDS CHANGE ######
-    def fillYi(self, desc):
-        return Crime.severeness(desc)
+    def writeThetaToCSV(self, consolePrint):
+        theta = self.theta.tolist()
+        # be safe about theta length
+        assert (len(theta) == len(self.nidDict) + self.timeIntervalCount)
+        # list to be exported
+        exportList = []
+        # we first export neighborhood data, then time data
+        for i in xrange(len(self.nidDict)):
+            output = [self.nidDict[i], theta[i]]
+            exportList.append(output)
+            if (consolePrint == True):
+                print self.nidDict[i], theta[i]
+        for i in xrange(self.timeIntervalCount):
+            output = [self.timeString(i), theta[i]]
+            exportList.append(output)
+            if (consolePrint == True):
+                print output[0], output[1]
+        # write to files
+        od = open("offense_data.csv", "w+")
+        for i in xrange(len(exportList)):
+            od.write(exportList[i][0] + "," + str(exportList[i][1]) + '\n')
+        od.close()
+
+
+    def timeString(self, i):
+        startHour = i * self.hours % 24
+        endHour = (i + 1) * self.hours % 24
+        return "%d:00 ~ %d:00" % (startHour, endHour)
+
+
+
+
+
+
 
