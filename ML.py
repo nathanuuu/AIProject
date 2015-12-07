@@ -24,6 +24,10 @@ class ML(object):
         self.makeY()
 
 
+    def makeX(self): pass
+    def makeY(self): pass
+
+
     #### CODE COPIED FROM HW3 SOLUTION ###
     def loss_logistic(self, X, y, theta):
         # output average loss over all examples
@@ -43,6 +47,9 @@ class ML(object):
     def grad_descent(self, lam, loss, T, alpha):
         (X, y) = (self.X, self.Y)
         theta = np.zeros(X.shape[1])
+        ratio = len(self.Y) / len(theta)
+        if (ratio < 10):
+            print "Alert: the data set used for machine learning is small."
         for _ in xrange(T):
             l,g = loss(X, y, theta)
             theta -= alpha*(g + lam*theta)
@@ -53,6 +60,9 @@ class ML(object):
     def stochastic_grad_descent(self, lam, loss, T, alpha):
         (X, y) = (self.X, self.Y)
         theta = np.zeros(X.shape[1])
+        ratio = len(self.Y) / len(theta)
+        if (ratio < 10):
+            print "Alert: the data set used for machine learning is small."
         for _ in xrange(T):
             for i in xrange(X.shape[0]):
                 l,g = loss(X[i:i+1,:], y[i:i+1], theta)
@@ -69,13 +79,6 @@ class ML(object):
         # print self.grad_descent(1e-3, self.loss_svm, 10, 0.001)
 
 
-    def writeThetaToCSV(self, consolePrint):
-        pass
-
-
-    def testingAlgo(self):
-        pass
-
-
-    def lineOutput(self, x):
-        pass
+    def writeThetaToCSV(self, consolePrint): pass
+    def testingAlgo(self): pass
+    def lineOutput(self, x): pass

@@ -11,6 +11,8 @@ class Arrest(ML):
     def __init__(self, dataArray, crimeClass, ageClass):
         self.crimeClass = crimeClass
         self.ageClass = sorted(ageClass)
+        if (len(self.ageClass) == 0):
+            self.ageClass = [16, 18, 21, 45, 65]
         # we need to take out only arrest data
         self.dataArray = TableOp.takeEntries(dataArray,
             ["REPORT_NAME"], ["ARREST"])
@@ -33,34 +35,31 @@ class Arrest(ML):
             ["NEIGHBORHOOD", "AGE", "GENDER"])
         self.updateAge()
         self.updateGender()
+        # size is the cross product of all feature sizes
         (self.Xrows, self.Xcols) = (len(self.XTable) - 1, 
             self.neighborhoodCount * self.ageGroupCount * self.genderCount)
         self.X = [[0.0 for i in xrange(self.Xcols)] for j in xrange(self.Xrows)]
+        # figure out what each the values are
         for i in xrange(len(self.X)):
             [n, a, g] = self.XTable[i + 1] # skip header
             index = (n * self.ageGroupCount * self.genderCount
-                + a * self.genderCount + g)
+                    + a * self.genderCount + g)
             self.X[i][index] = 1.0
+        # convert numpy array
         self.X = np.array(self.X)
 
 
-    ######## CHANGE ########
     def updateAge(self):
         for i in xrange(1, len(self.XTable), 1):
             # invalid data are thrown out
             age = int(self.XTable[i][1])
-            if (0 < age < 15):
-                self.XTable[i][1] = 0
-            elif (15 <= age < 18):
-                self.XTable[i][1] = 1
-            elif (18 <= age < 21):
-                self.XTable[i][1] = 2
-            elif (21 <= age < 45):
-                self.XTable[i][1] = 3
-            elif (45 <= age < 65):
-                self.XTable[i][1] = 4
+            if (age >= self.ageClass[self.ageGroupCount - 1 - 1]):
+                self.XTable[i][1] = self.ageGroupCount - 1
             else:
-                self.XTable[i][1] = 5
+                for j in xrange(self.ageGroupCount - 1):
+                    if (self.ageClass[j] > age):
+                        self.XTable[i][1] = j
+                        break
 
 
     def updateGender(self):
@@ -92,17 +91,11 @@ class Arrest(ML):
         # age group
         a = (index % (self.ageGroupCount * self.genderCount)) / self.genderCount
         if (a == 0):
-            aString = "under 15 "
-        elif (a == 1):
-            aString = "15 to 17 "
-        elif (a == 2):
-            aString = "18 to 20 "
-        elif (a == 3):
-            aString = "21 to 44 "
-        elif (a == 4):
-            aString = "45 to 64 "
+            aString = "under %d" % self.ageClass[0]
+        elif (a == self.ageGroupCount - 1):
+            aString = "%d and over" % self.ageClass[-1]
         else:
-            aString = "65 and above "
+            aString = "%d to %d" % (self.ageClass[a-1], self.ageClass[a] - 1)
         # neighborhood
         n = index / (self.genderCount * self.ageGroupCount)
         nString = self.nidDict[n]
@@ -112,7 +105,6 @@ class Arrest(ML):
     def writeThetaToCSV(self, consolePrint, fileName):
         theta = self.theta.tolist()
         exportList = []
-        print theta
         for i in xrange(len(theta)):
             output = self.recoverLabels(i)
             output.append(str(theta[i]))
@@ -125,6 +117,5 @@ class Arrest(ML):
             ad.write(exportList[i][0] + "," + str(exportList[i][1]) + ',' +
                 exportList[i][2] + "," + str(exportList[i][3]) + '\n')
         ad.close()
-
 
 

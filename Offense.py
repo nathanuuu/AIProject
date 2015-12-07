@@ -63,7 +63,7 @@ class Offense(ML):
         self.Y = np.array(self.Y)
 
 
-    def writeThetaToCSV(self, consolePrint):
+    def writeThetaToCSV(self, consolePrint, fileName):
         theta = self.theta.tolist()
         # be safe about theta length
         assert (len(theta) == len(self.nidDict) + self.timeIntervalCount)
@@ -81,7 +81,7 @@ class Offense(ML):
             if (consolePrint == True):
                 print output[0], output[1]
         # write to files
-        od = open("offense_data.csv", "w+")
+        od = open(fileName, "w+")
         for i in xrange(len(exportList)):
             od.write(exportList[i][0] + "," + str(exportList[i][1]) + '\n')
         od.close()
