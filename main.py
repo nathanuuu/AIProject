@@ -39,8 +39,7 @@ B = BlotterML(u)
 
 # Run Offense ML
 # A crime class is passed that indicates what we consider as major offenses
-crimeClass = [("DUI", 1.0), ("burglary", 1.0), ("theft", 1.0),
-              ("robbery", 1.0), ("arson", 1.0), ("kidnapping", 1.0)]
+crimeClass = [("Theft", 1.0), ("Robbery", 1.0)]
 hours = 1
 fn = "offense_data.csv"
 B.runOffense(crimeClass, hours, fn)
@@ -48,8 +47,9 @@ B.runOffense(crimeClass, hours, fn)
 # Run Arrest ML
 # A crime class is passed that indicates whether we want to check if the
 # arrested perp is likely to commit any crime with mentioned description
-crimeClass = [("possession", 1.0)]
-ageClass = [16, 18, 21, 65, 45] # numbers mark the beginning of a class
+crimeClass = [("drunk", 1.0), ("marijuana", 1.0), ("substance", 1.0), 
+              ("mischief", 1.0), ("trespass", 1.0), ("loiter", 1.0)]
+ageClass = [16, 21, 35, 45, 65] # numbers mark the beginning of a class
 fn = "arrest_data.csv"
 B.runArrest(crimeClass, ageClass, fn)
 # we can generate output by calling the lineOutput function of the problem
