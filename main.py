@@ -12,26 +12,46 @@ class BlotterML(object):
         # print "Alert: using dummy input"
         # self.dataArray = rd.fromFile("dummyInput.txt")
 
-    # Runs the machine learning problem on arrest records
-    def runArrest(self):
-        aML = Arrest(self.dataArray)
-        aML.makeDataSets()
-        aML.makeVectors()
 
     # Runs the machine learning problem on offense records
-    def runOffense(self):
-        oML = Offense(self.dataArray)
+    def runOffense(self, crimeClass, hours, fileName):
+        print "Running Offense problem..."
+        oML = Offense(self.dataArray, crimeClass, hours)
         oML.makeDataSets()
         oML.makeVectors()
         oML.learningAlgo()
+        oML.writeThetaToCSV(False, fileName)
 
 
-# Create a new instance of the blotter problem
+    # Runs the machine learning problem on arrest records
+    def runArrest(self, crimeClass, ageClass, fileName):
+        print "Running Arrest problem..."
+        aML = Arrest(self.dataArray, crimeClass, ageClass)
+        aML.makeDataSets()
+        aML.makeVectors()
+        aML.learningAlgo()
+        aML.writeThetaToCSV(False, fileName)
+
+
+# Create a new instance of the blotter problem from the Police Blotter URL
 u = "https://data.wprdc.org/datastore/dump/c0fcc09a-7ddc-4f79-a4c1-9542301ef9dd"
 B = BlotterML(u)
-# Run it
-B.runOffense()
-#B.runArrest()
+
+# Run Offense ML
+# A crime class is passed that indicates what we consider as major offenses
+crimeClass = [("Theft", 1.0), ("Robbery", 1.0)]
+hours = 1
+fn = "offense_data.csv"
+B.runOffense(crimeClass, hours, fn)
+
+# Run Arrest ML
+# A crime class is passed that indicates whether we want to check if the
+# arrested perp is likely to commit any crime with mentioned description
+crimeClass = [("drunk", 1.0), ("marijuana", 1.0), ("substance", 1.0), 
+              ("mischief", 1.0), ("trespass", 1.0), ("loiter", 1.0)]
+ageClass = [16, 21, 35, 45, 65] # numbers mark the beginning of a class
+fn = "arrest_data.csv"
+B.runArrest(crimeClass, ageClass, fn)
 # we can generate output by calling the lineOutput function of the problem
 
 
